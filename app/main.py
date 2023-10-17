@@ -1,10 +1,12 @@
 
 import PySimpleGUI as sg
-from PIL import Image
+from PIL import Image, ImageTk
 import os
 
 import base64
 from io import BytesIO
+
+
 
 home_catalog = os.path.expanduser('~') + "/projects/CVCBoxArts/input"
 filetypes = (('all images', '*.png *.jpg *.jpeg'),)
@@ -23,6 +25,8 @@ class BoxArt():
         banner = Image.open('/home/poli/projects/CVCBoxArts/data/banner_front_nes.png')
         boxart = cover.copy()
         boxart.paste(banner)
+        boxart.save('/home/poli/projects/CVCBoxArts/output/test.png', quality=95)
+        print('zapisalo sie')
         return boxart
 
     @staticmethod
@@ -30,6 +34,7 @@ class BoxArt():
         buffered = BytesIO()
         image.save(buffered, format="JPEG")
         return base64.b64encode(buffered.getvalue())
+
 def run():
     
     sg.theme("DarkAmber")
@@ -51,9 +56,9 @@ def run():
             print('wybrano okładkę')
             print(values)
             new_boxart = BoxArt(values['selected_cover'], values['gametype'], values['boxtype'])
-            data = BoxArt.convert_image_to_base64(new_boxart.generate_new_boxart())
+            data = ImageTk.PhotoImage(new_boxart.generate_new_boxart())
             print(data)
-            window['preview_image'].update(source=data)
+            window['preview_image'].update(data=data)
         if (
             event == sg.WIN_CLOSED or event == "Cancel"
         ):  # if user closes window or clicks cancel
