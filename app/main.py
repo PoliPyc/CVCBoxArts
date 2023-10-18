@@ -50,10 +50,10 @@ class BoxArt:
 
 
 def run():
-    sg.theme("DarkAmber")
+    sg.theme("DarkTeal11")
     layout = [
         [
-            [sg.Text("Select cover: ")]
+            [sg.Text("Select cover: ", key="cover_label")]
             + [
                 sg.FileBrowse(
                     initial_folder=home_catalog,
@@ -68,20 +68,24 @@ def run():
             [sg.Text("Select gametype: ")]
             + [sg.OptionMenu(gametypes, default_value=gametypes[0], key="gametype")]
         ],
+        [sg.Text("Select boxtype: ")], 
         [
-            [sg.Text("Select boxtype: ")]
-            + [sg.OptionMenu(boxtypes, default_value=boxtypes[0], key="boxtype")]
+            [sg.Checkbox("Front", default=True, key="boxtype")] +
+            [sg.Checkbox("Back", key="boxtype")] +
+            [sg.Checkbox("Full", key="boxtype")] +
+            [sg.Checkbox("3D", key="boxtype")]
         ],
         [sg.Text("Preview:")],
         [sg.Image(key="preview_image")],
         [sg.Button("Save"), sg.Button("Cancel")],
-        [sg.StatusBar("code: polipyc, graphics: krohmal © 2023")],
+        [sg.StatusBar("code: polipyc, graphics: krohmal © 2023", relief=sg.RELIEF_FLAT, justification='right')],
     ]
 
-    window = sg.Window("CVCBoxArts v.0.1", layout, finalize=True)
+    window = sg.Window("CVCBoxArts v.0.2", layout, finalize=True)
 
     while True:
         event, values = window.read()
+        window['cover_label'].expand(expand_x = True)
         if event == "selected_cover":
             print("wybrano okładkę")
             print(values)
