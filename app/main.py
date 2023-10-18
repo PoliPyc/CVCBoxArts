@@ -40,6 +40,10 @@ class BoxArt:
         if banner.width > self.boxart.width:
             print("Resizing banner")
             banner = resize_to_width(banner, self.boxart.width)
+        else:
+            print("resizing cover")
+            self.boxart = resize_to_width(self.boxart, banner.width)
+            
         self.boxart.paste(banner, (0, 0), banner)
         self.boxart = resize_to_width(self.boxart, USBLOADER_COVER_WIDTH)
         # boxart.save("/home/poli/projects/CVCBoxArts/output/test.png", quality=95)
