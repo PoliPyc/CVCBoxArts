@@ -1,12 +1,15 @@
 import base64
 import os
 from io import BytesIO
+from pathlib import Path
 
 import PySimpleGUI as sg
 from PIL import Image, ImageTk
 
 USBLOADER_COVER_WIDTH = 160
 
+root_path = Path(__file__).resolve().parent
+data_path = Path(str(root_path) + "/../data").resolve()
 home_catalog = os.path.expanduser("~") + "/projects/CVCBoxArts/input"
 filetypes = (("all images", "*.png *.jpg *.jpeg"),)
 gametypes = ("NES", "SNES", "N64", "GENESIS", "TGX16")
@@ -33,8 +36,13 @@ class BoxArt:
             hsize = int((float(image.size[1]) * float(wpercent)))
             return image.resize((width, hsize), Image.LANCZOS)
 
-        cover = Image.open(self.cover_path)
-        banner = Image.open("/home/poli/projects/CVCBoxArts/data/banner_front_nes.png")
+        try:
+            cover = Image.open(self.cover_path)
+        except Exception as e:
+            print(e)
+            return
+
+        banner = self._get_banner()
         self.boxart = cover.copy()
         self.name = cover.filename
         if banner.width > self.boxart.width:
@@ -43,12 +51,17 @@ class BoxArt:
         else:
             print("resizing cover")
             self.boxart = resize_to_width(self.boxart, banner.width)
-            
+
         self.boxart.paste(banner, (0, 0), banner)
         self.boxart = resize_to_width(self.boxart, USBLOADER_COVER_WIDTH)
         # boxart.save("/home/poli/projects/CVCBoxArts/output/test.png", quality=95)
         # print("zapisalo sie")
         return self.boxart
+
+    def _get_banner(self) -> Image:
+        return Image.open(
+            str(data_path) + f"/banner_{self.boxtype}_{self.gametype}_hq.png"
+        )
 
     @staticmethod
     def convert_image_to_base64(image) -> str:
@@ -74,14 +87,22 @@ def run():
         ],
         [
             [sg.Text("Select gametype: ")]
-            + [sg.OptionMenu(gametypes, default_value=gametypes[0], key="gametype")]
+            + [
+                sg.Combo(
+                    gametypes,
+                    default_value=gametypes[0],
+                    enable_events=True,
+                    readonly=False,
+                    key="gametype",
+                )
+            ]
         ],
         [sg.Text("Select boxtype: ")],
         [
-            [sg.Checkbox("Front", default=True, key="boxtype")]
-            + [sg.Checkbox("Back", key="boxtype")]
-            + [sg.Checkbox("Full", key="boxtype")]
-            + [sg.Checkbox("3D", key="boxtype")]
+            [sg.Checkbox("Front", default=True, key="box-front")]
+            + [sg.Checkbox("Back", key="box-back")]
+            + [sg.Checkbox("Full", key="box-full")]
+            + [sg.Checkbox("3D", key="box-3d")]
         ],
         [sg.Text("Preview:")],
         [sg.Image(key="preview_image")],
@@ -99,16 +120,19 @@ def run():
 
     while True:
         event, values = window.read()
-        window["cover_label"].expand(expand_x=True) # broken
-        if event == "selected_cover":
+        window["cover_label"].expand(expand_x=True)  # broken
+        if event in ("selected_cover", "gametype"):
             print("wybrano okładkę")
             print(values)
-            new_boxart = BoxArt(
-                values["selected_cover"], values["gametype"], values["boxtype"]
-            )
-            data = ImageTk.PhotoImage(new_boxart.generate_new_boxart())
-            print(data)
-            window["preview_image"].update(data=data)
+            if values["box-front"]:
+                boxtypes = "front"
+            new_boxart = BoxArt(values["selected_cover"], values["gametype"], boxtypes)
+            try:
+                data = ImageTk.PhotoImage(new_boxart.generate_new_boxart())
+                window["preview_image"].update(data=data)
+            except Exception as e:
+                print(e)
+
         if event == "Save":
             filename = sg.tk.filedialog.asksaveasfilename(
                 defaultextension="png",
