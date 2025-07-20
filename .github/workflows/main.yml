@@ -51,10 +51,6 @@ jobs:
     - name: Add Poetry to PATH
       run: echo "$env:USERPROFILE\AppData\Roaming\Python\Scripts" >> $env:GITHUB_PATH
       shell: powershell
-    - name: Upload tgz artifact
-      uses: sayyid5416/pyinstaller@v1
-      with:
-        upload_exe_with_name: ViiCovers_bundle.tgz
 
     - name: Install dependencies
       run: poetry install --no-interaction --no-root
