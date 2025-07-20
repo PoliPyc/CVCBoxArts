@@ -34,6 +34,7 @@ jobs:
       with:
         name: ViiCovers-bundle
         path: ViiCovers_bundle.tgz
+        
   build-windows:
     runs-on: windows-latest
     name: Build on Windows
@@ -55,11 +56,7 @@ jobs:
       with:
         upload_exe_with_name: ViiCovers_bundle.tgz
 
-    - name: Install dependencies    - name: Upload tgz artifact
-      uses: sayyid5416/pyinstaller@v1
-      with:
-        upload_exe_with_name: ViiCovers_bundle.tgz
-
+    - name: Install dependencies
       run: poetry install --no-interaction --no-root
       shell: powershell
 
