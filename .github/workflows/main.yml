@@ -24,13 +24,13 @@ jobs:
       uses: sayyid5416/pyinstaller@v1
       with:
         spec: ViiCovers.spec
-        
+
     - name: Pack binary + data into tgz
       run: |
         tar -czvf ViiCovers_bundle.tgz dist/ViiCovers/data dist/ViiCovers/ViiCovers
           
     - name: Upload zipped bundle
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: ViiCovers-bundle
         path: ViiCovers_bundle.tgz
@@ -50,8 +50,16 @@ jobs:
     - name: Add Poetry to PATH
       run: echo "$env:USERPROFILE\AppData\Roaming\Python\Scripts" >> $env:GITHUB_PATH
       shell: powershell
+    - name: Upload tgz artifact
+      uses: sayyid5416/pyinstaller@v1
+      with:
+        upload_exe_with_name: ViiCovers_bundle.tgz
 
-    - name: Install dependencies
+    - name: Install dependencies    - name: Upload tgz artifact
+      uses: sayyid5416/pyinstaller@v1
+      with:
+        upload_exe_with_name: ViiCovers_bundle.tgz
+
       run: poetry install --no-interaction --no-root
       shell: powershell
 
@@ -67,7 +75,7 @@ jobs:
         zip -r ViiCovers_bundle.zip build/ViiCovers
       
     - name: Upload zipped bundle
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: ViiCovers-bundle
         path: ViiCovers_bundle.zip
