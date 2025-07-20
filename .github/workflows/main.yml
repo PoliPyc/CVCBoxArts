@@ -27,8 +27,7 @@ jobs:
     - name: Pack binary + data into tgz
       run: |
         mkdir upload
-        cp dist/ViiCovers upload/
-        cp -r dist/data upload/
+        cp -r dist/ViiCovers upload/
         cd upload
         tar -czv ../ViiCovers_bundle.tgz .
           
@@ -66,6 +65,8 @@ jobs:
     - name: Pack exe + data into zip
       run: |
         mkdir upload
+        ls
+        ls dist
         cp dist/ViiCovers.exe upload/
         cp -r dist/data upload/
         cd upload
