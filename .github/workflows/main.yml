@@ -24,6 +24,18 @@ jobs:
       uses: sayyid5416/pyinstaller@v1
       with:
         spec: ViiCovers.spec
+    - name: Pack binary + data into tgz
+      run: |
+        mkdir upload
+        cp dist/ViiCovers upload/
+        cp -r dist/data upload/
+        cd upload
+        tar -czv ../ViiCovers_bundle.tgz .
+          
+    - name: Upload tgz artifact
+      uses: sayyid5416/pyinstaller@v1
+      with:
+        upload_exe_with_name: ViiCovers_bundle.tgz
 
   build-windows:
     runs-on: windows-latest
@@ -50,3 +62,18 @@ jobs:
       uses: sayyid5416/pyinstaller@v1
       with:
         spec: ViiCovers.spec
+
+    - name: Pack exe + data into zip
+      run: |
+        mkdir upload
+        cp dist/ViiCovers.exe upload/
+        cp -r dist/data upload/
+        cd upload
+        zip -r ../ViiCovers_bundle.zip .
+      
+    - name: Upload zip artifact
+      uses: sayyid5416/pyinstaller@v1
+      with:
+        upload_exe_with_name: ViiCovers_bundle.zip
+
+
