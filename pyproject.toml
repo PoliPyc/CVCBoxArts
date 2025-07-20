@@ -10,13 +10,12 @@ readme = "README.md"
 python = ">=3.10,<3.13"
 Pillow = "^10.1.0"
 freesimplegui = "^5.2.0.post1"
-ruff = "^0.12.4"
-mypy = "^1.17.0"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^7.4.2"
 pyinstaller = "^6.1.0"
-
+ruff = "^0.12.4"
+mypy = "^1.17.0"
 
 [build-system]
 requires = ["poetry-core"]
