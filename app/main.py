@@ -1,13 +1,13 @@
 """Custom boxart generator for Virtual Console injections designed for use with USBLoaderGX Cover system."""
 
-
 import base64
 import os
 from io import BytesIO
 from pathlib import Path
+from typing import Optional
 
-import FreeSimpleGUI as sg
-from PIL import Image, ImageTk
+import FreeSimpleGUI as sg # type: ignore
+from PIL import Image, ImageTk # type: ignore
 
 __VERSION = "0.2.2"
 
@@ -32,11 +32,11 @@ class BoxArt:
 
     def __init__(
         self,
-        cover_path: str = None,
-        gametype: str = None,
-        boxtype: str = None,
-        fit: str = None,
-        name: str = None,
+        cover_path: Optional[str] = None,
+        gametype: Optional[str] = None,
+        boxtype: Optional[str] = None,
+        fit: Optional[str] = None,
+        name: Optional[str] = None,
     ) -> None:
         """Initialize a BoxArt object with the given parameters.
 
@@ -51,7 +51,7 @@ class BoxArt:
         self.boxtype = boxtype
         self.fit = fit
         self.name = None
-        self.boxart = None
+        self.boxart: Image = None
         self.cover = Image.new(
             "RGB", (USBLOADER_COVER_FRONT_WIDTH, USBLOADER_COVER_FRONT_HEIGHT)
         )
@@ -117,7 +117,7 @@ class BoxArt:
         )
 
     @staticmethod
-    def convert_image_to_base64(image) -> str:
+    def convert_image_to_base64(image) -> bytes:
         buffered = BytesIO()
         image.save(buffered, format="JPEG")
         return base64.b64encode(buffered.getvalue())
