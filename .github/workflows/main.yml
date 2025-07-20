@@ -1,15 +1,52 @@
-- name: PyInstaller Linux
-  # You may pin to the exact commit or the version.
-  # uses: JackMcKew/pyinstaller-action-linux@38639c352a36917eea765f9283bfd1092c28af7b
-  uses: JackMcKew/pyinstaller-action-linux@0.1.4
-  with:
-    # Directory containing source code & .spec file (optional requirements.txt).
-    path: # default is src
-    # Specify a custom URL for PYPI
-    pypi_url: # optional, default is https://pypi.python.org/
-    # Specify a custom URL for PYPI Index
-    pypi_index_url: # optional, default is https://pypi.python.org/simple
-    # Specify a file path for .spec file
-    spec: # optional, default is 
-    # Specify whether to install Tkinter or not
-    tkinter: # optional
+name: Build ViiCovers binaries
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build-linux:
+    runs-on: ubuntu-latest
+    name: Build on Linux
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Install Poetry
+      run: |
+        curl -sSL https://install.python-poetry.org | python3
+        echo "$HOME/.local/bin" >> $GITHUB_PATH
+
+    - name: Install dependencies
+      run: poetry install --no-interaction
+
+    - name: Build with PyInstaller
+      uses: sayyid5416/pyinstaller@v1
+      with:
+        spec: ViiCovers.spec
+
+  build-windows:
+    runs-on: windows-latest
+    name: Build on Windows
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Install Poetry
+      run: |
+        (Invoke-WebRequest -Uri https://install.python-poetry.org -UseBasicParsing).Content | python
+      shell: powershell
+
+    - name: Add Poetry to PATH
+      run: echo "$env:USERPROFILE\AppData\Roaming\Python\Scripts" >> $env:GITHUB_PATH
+      shell: powershell
+
+    - name: Install dependencies
+      run: poetry install --no-interaction
+      shell: powershell
+
+    - name: Build with PyInstaller
+      uses: sayyid5416/pyinstaller@v1
+      with:
+        spec: ViiCovers.spec
