@@ -1,4 +1,4 @@
-"""Custom boxart generator for Virtual Console injections designed for use with USBLoaderGX Cover system."""
+"""Custom cover generator for Virtual Console injections designed for use with USBLoaderGX cover system."""
 
 import base64
 import os
@@ -9,7 +9,8 @@ from typing import Optional
 import FreeSimpleGUI as sg # type: ignore
 from PIL import Image, ImageTk # type: ignore
 
-__VERSION = "0.2.2"
+__APP_NAME = "ViiCovers"
+__VERSION = "0.2.3"
 
 USBLOADER_COVER_FRONT_WIDTH = 160
 USBLOADER_COVER_FRONT_HEIGHT = 224
@@ -21,7 +22,7 @@ FIT_OPTIONS = [
 
 root_path = Path(__file__).resolve().parent
 data_path = Path(str(root_path) + "/../data").resolve()
-home_catalog = os.path.expanduser("~") + "/projects/CVCBoxArts/input"
+home_catalog = os.path.expanduser("~")
 filetypes = (("all images", "*.png *.jpg *.jpeg"),)
 gametypes = ("NES", "SNES", "N64", "GENESIS", "TGX16")
 boxtypes = ("Front", "Back", "Full", "3D")
@@ -107,8 +108,7 @@ class BoxArt:
 
         self.cover.paste(self.boxart, (0, 0))
         self.cover.paste(banner, (0, 0), banner)
-        # boxart.save("/home/poli/projects/CVCBoxArts/output/test.png", quality=95)
-        # print("zapisalo sie")
+       
         return self.cover
 
     def _get_banner(self) -> Image:
@@ -179,7 +179,7 @@ def create_layout() -> list:
         [sg.Button("Save"), sg.Button("Cancel")],
         [
             sg.StatusBar(
-                "code: polipyc, graphics: krohmal © 2023",
+                "code: polipyc, graphics: krohmal © 2025",
                 relief=sg.RELIEF_FLAT,
                 justification="right",
             )
@@ -190,7 +190,7 @@ def create_layout() -> list:
 def run():
     sg.theme("DarkTeal11")
 
-    window = sg.Window("CVCBoxArts v." + __VERSION, create_layout(), finalize=True)
+    window = sg.Window(__APP_NAME + " v." + __VERSION, create_layout(), finalize=True)
 
     while True:
         event, values = window.read()

@@ -1,6 +1,6 @@
 [tool.poetry]
-name = "cvcboxarts"
-version = "0.1.0"
+name = "ViiCovers"
+version = "0.2.3"
 description = ""
 authors = ["poliakustyczny <poliakustyczny@gmail.com>"]
 license = "MIT"
