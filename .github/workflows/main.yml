@@ -18,7 +18,7 @@ jobs:
         echo "$HOME/.local/bin" >> $GITHUB_PATH
 
     - name: Install dependencies
-      run: poetry install --no-interaction
+      run: poetry install --no-interaction --no-root
 
     - name: Build with PyInstaller
       uses: sayyid5416/pyinstaller@v1
@@ -43,7 +43,7 @@ jobs:
       shell: powershell
 
     - name: Install dependencies
-      run: poetry install --no-interaction
+      run: poetry install --no-interaction --no-root
       shell: powershell
 
     - name: Build with PyInstaller
