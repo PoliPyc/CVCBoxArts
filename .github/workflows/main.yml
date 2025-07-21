@@ -20,8 +20,8 @@ jobs:
     - name: Install tkinter
       run: |
         sudo apt-get update
-        sudo apt-get install -y python3-tk
-
+        sudo apt-get install -y python3-tk libx11-dev libxext-dev libxrender-dev
+        
     - name: Install dependencies
       run: poetry install --no-interaction --no-root
 
