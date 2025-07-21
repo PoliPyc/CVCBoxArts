@@ -3,7 +3,7 @@
 
 a = Analysis(
     ['app/main.py'],
-    pathex=[],
+    pathex=['/home/runner/work/ViiCovers/ViiCovers'],
     binaries=[],
     datas=[('./data/', '.')],
     hiddenimports=['PIL._tkinter_finder'],
