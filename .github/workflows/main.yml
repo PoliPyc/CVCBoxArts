@@ -24,6 +24,7 @@ jobs:
       uses: sayyid5416/pyinstaller@v1
       with:
         spec: ViiCovers.spec
+        options: --hidden-import="PIL._tkinter_finder", --add-data="./data/:.", --contents-directory="data"
 
     - name: Pack binary + data into tgz
       run: |
@@ -61,17 +62,17 @@ jobs:
       with:
         spec: ViiCovers.spec
 
-    - name: Pack exe + data into zip
-      run: |
-        ls
-        ls build/
-        zip -r ViiCovers_bundle.zip build/ViiCovers
+    #- name: Pack exe + data into zip
+    #  run: |
+    #    ls
+    #    ls build/
+    #    zip -r ViiCovers_bundle.zip build/ViiCovers
       
     - name: Upload zipped bundle
       uses: actions/upload-artifact@v4
       with:
         name: ViiCovers-bundle
-        path: ViiCovers_bundle.zip
+        path: build
 
 
 
